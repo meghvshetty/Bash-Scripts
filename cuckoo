@@ -1,0 +1,55 @@
+#!/bin/bash
+#Author Megh V Shetty
+
+#Runs on Ubuntu-18.04.4 with a user name as cuckoo
+
+# General update
+sudo apt -y update
+sudo apt -list upgrable
+sudo apt -y upgrade
+
+# Cuckoo Installation
+
+sudo apt-get -y install python python-pip python-dev libffi-dev libssl-dev
+sudo apt-get -y install python-virtualenv python-setuptools
+sudo apt-get -y install libjpeg-dev zlib1g-dev swig
+
+ # In order to use the Django-based Web Interface, MongoDB is required:
+sudo apt-get -y install mongodb
+
+# virtualization Software
+echo deb http://download.virtualbox.org/virtualbox/debian xenial contrib | sudo tee -a /etc/apt/sources.list.d/virtualbox.list
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+sudo apt-get update
+sudo apt-get -y install virtualbox
+
+# Installing tcpdump
+sudo apt-get -y install tcpdump apparmor-utils
+sudo aa-disable /usr/sbin/tcpdump
+sudo apt-get -y install tcpdump
+sudo groupadd pcap
+sudo usermod -a -G pcap cuckoo
+sudo chgrp pcap /usr/sbin/tcpdump
+sudo setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
+
+#Installing M2Crypto
+sudo apt-get -y install swig
+sudo pip install m2crypto
+
+#adding users
+sudo adduser cuckoo
+sudo usermod -a -G vboxusers cuckoo
+
+#Downloading Windows OS
+wget https://cuckoo.sh/win7ultimate.iso
+sudo mkdir /mnt/win7
+sudo mount -o ro,loop win7ultimate.iso /mnt/win7
+
+#Install Cuckoo
+virtualenv venv
+. venv/bin/activate
+pip install -U pip setuptools
+pip install -U cuckoo vmcloak
+
+#Automatic VM Creation
+vmcloak-vboxnet0
