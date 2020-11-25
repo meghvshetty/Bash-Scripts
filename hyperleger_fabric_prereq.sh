@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sudo apt-get install git
+sudo apt-get install git -y
 sudo apt-get install curl -y
 sudo apt-get install golang-go -y
 export GOPATH=$HOME/go
