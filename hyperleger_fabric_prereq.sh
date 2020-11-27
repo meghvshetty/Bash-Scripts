@@ -9,6 +9,7 @@ sudo apt-get install nodejs -y
 sudo apt-get install npm -y
 sudo apt-get install python -y
 sudo apt-get install docker -y
+sudo usermod -a -G docker hyper
 sudo apt-get update
 apt-cache policy docker-ce
 sudo apt-get install -y docker-ce
